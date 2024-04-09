@@ -1,97 +1,106 @@
-import { useEffect, FormEventHandler } from 'react';
-import Checkbox from '@/Components/Checkbox';
-import GuestLayout from '@/Layouts/GuestLayout';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import AppLayout from "@/Layouts/AppLayout";
+import { Link, useForm } from "@inertiajs/react";
+import {
+    Anchor,
+    Button,
+    Card,
+    Checkbox,
+    Container,
+    Flex,
+    PasswordInput,
+    Stack,
+    Text,
+    TextInput,
+    Title,
+} from "@mantine/core";
+import React from "react";
 
-export default function Login({ status, canResetPassword }: { status?: string, canResetPassword: boolean }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
+function Register() {
+    const form = useForm({
+        email: "",
+        password: "",
         remember: false,
     });
 
-    useEffect(() => {
-        return () => {
-            reset('password');
-        };
-    }, []);
-
-    const submit: FormEventHandler = (e) => {
+    const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        post(route('login'));
+        form.post("/login", {
+            onFinish: () => form.reset("password"),
+        });
     };
-
     return (
-        <GuestLayout>
-            <Head title="Log in" />
+        <AppLayout>
+            <Container pt={"lg"}>
+                <Flex justify={"center"}>
+                    <Stack maw={600}>
+                        <div>
+                            <Title c={"tanya-pink"} order={2} ta={"center"}>
+                                Welcome Back!
+                            </Title>
+                            <Text ta={"center"}>
+                                Don't have an account yet?{" "}
+                                <Anchor component={Link} href="/register">
+                                    Register Here!
+                                </Anchor>
+                            </Text>
+                        </div>
+                        <Card withBorder>
+                            <Card.Section p={"lg"}>
+                                <form onSubmit={submitForm}>
+                                    <Stack>
+                                        <TextInput
+                                            label="Email Address"
+                                            type="email"
+                                            value={form.data.email}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    "email",
+                                                    e.currentTarget.value
+                                                )
+                                            }
+                                            placeholder="john@domain.com"
+                                            error={form.errors.email}
+                                        />
 
-            {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
+                                        <PasswordInput
+                                            label="Password"
+                                            value={form.data.password}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    "password",
+                                                    e.currentTarget.value
+                                                )
+                                            }
+                                            error={form.errors.password}
+                                        />
+                                        <Checkbox
+                                            label="Remember me"
+                                            checked={form.data.remember}
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    "remember",
+                                                    e.currentTarget.checked
+                                                )
+                                            }
+                                        />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        isFocused={true}
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="current-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="block mt-4">
-                    <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            checked={data.remember}
-                            onChange={(e) => setData('remember', e.target.checked)}
-                        />
-                        <span className="ms-2 text-sm text-gray-600">Remember me</span>
-                    </label>
-                </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
-                </div>
-            </form>
-        </GuestLayout>
+                                        <Button mt={"md"} type="submit">
+                                            Login
+                                        </Button>
+                                    </Stack>
+                                </form>
+                            </Card.Section>
+                        </Card>
+                        <Text ta={"center"}>
+                            By loging in, you agree to our{" "}
+                            <Anchor>Terms of Service</Anchor> and{" "}
+                            <Anchor>Privacy Policy</Anchor>
+                        </Text>
+                    </Stack>
+                </Flex>
+            </Container>
+        </AppLayout>
     );
 }
+
+export default Register;

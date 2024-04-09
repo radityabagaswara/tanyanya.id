@@ -11,9 +11,9 @@ return [
     | by the framework. The "local" disk, as well as a variety of cloud
     | based disks are available to your application for file storage.
     |
-    */
+     */
 
-    'default' => env('FILESYSTEM_DISK', 'local'),
+    'default' => env('FILESYSTEM_DISK', 'idcloudhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
     | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
-    */
+     */
 
     'disks' => [
 
@@ -39,7 +39,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -55,6 +55,17 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'idcloudhost' => [
+            'driver' => 's3',
+            'key' => env('CLOUDHOST_ACCESS_KEY'),
+            'secret' => env('CLOUDHOST_SECRET'),
+            'bucket' => env('CLOUDHOST_BUCKET'),
+            'endpoint' => env('CLOUDHOST_ENDPOINT'),
+            'region' => env('CLOUDHOST_DEFAULT_REGION'),
+            'use_path_style_endpoint' => env('CLOUDHOST_USE_PATH_STYLE_ENDPOINT', false),
+            'visibility' => 'public',
+
+        ],
 
     ],
 
@@ -67,7 +78,7 @@ return [
     | `storage:link` Artisan command is executed. The array keys should be
     | the locations of the links and the values should be their targets.
     |
-    */
+     */
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
