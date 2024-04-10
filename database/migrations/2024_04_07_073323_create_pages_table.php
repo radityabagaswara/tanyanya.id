@@ -21,9 +21,15 @@ return new class extends Migration
             $table->boolean('allow_anon_questions')->default(false);
             $table->foreignUlid('user_id')->constrained('users')->cascadeOnDelete();
             $table->ulid('overlay_key');
+            $table->string('border_color')->default('#FB4983');
+            $table->string('header_color')->default('#FB4983');
+            $table->string('header_text_color')->default('#fff');
+            $table->string('body_color')->default('#fafafa');
+            $table->string('body_text_color')->default('#000');
             $table->softDeletes();
             $table->timestamps();
         });
+
     }
 
     /**

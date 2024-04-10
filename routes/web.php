@@ -2,6 +2,7 @@
 
 use App\Events\SendMessageEvent;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OverlaySettingsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TanyaController;
@@ -36,7 +37,13 @@ Route::middleware('auth')->group(function () {
     Route::post("/page/banner", [PageController::class, 'updatePageBanner'])->name('page.banner');
     Route::put('/page/settings', [PageController::class, 'updateSettings'])->name('page.settings');
 
+    Route::get("/dashboard/overlay", [OverlaySettingsController::class, 'index'])->name('dashboard.overlay');
+    Route::put("/dashboard/overlay", [OverlaySettingsController::class, 'update'])->name('dashboard.overlay.update');
+    Route::post("/dashboard/overlay/reset", [OverlaySettingsController::class, 'resetColor'])->name('dashboard.overlay.reset');
+    Route::post("/dashboard/overlay/key/reset", [OverlaySettingsController::class, 'resetKey'])->name('dashboard.overlay.key.reset');
+
     Route::put('/streamQuestion/{question}', [DashboardController::class, 'streamQuestions'])->name('streamQuestion');
+    Route::delete('/question/{question}', [DashboardController::class, 'deleteQuestion'])->name('deleteQuestion');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

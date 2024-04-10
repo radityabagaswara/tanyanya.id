@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Events\OverlayBroadcastEvent;
 use App\Models\Question;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -37,7 +39,7 @@ class DashboardController extends Controller
 
         event(new OverlayBroadcastEvent(overlay_key: $overlay_key, question: $question));
 
-        return (response()->json(['message' => 'success', 'overlay_key' => $overlay_key, 'question' => $question]));
+        return (response()->json(['message' => 'success']));
     }
 
     public function getQuestions(Request $request)
@@ -66,6 +68,22 @@ class DashboardController extends Controller
         }
 
         return ['message' => 'success', 'data' => $questions];
+    }
+
+    public function deleteQuestion(Question $question)
+    {
+        if ($question->page_id != auth()->user()->page->id) {
+            return response()->json(['message' => 'Question not found'], 404);
+        }
+        DB::beginTransaction();
+        try {
+            $question->delete();
+            DB::commit();
+            return response()->json(['title' => 'Success', 'message' => 'Question has been deleted.']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['title' => 'Error', 'message' => 'Failed to delete question.'], 500);
+        }
     }
 
 }

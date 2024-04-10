@@ -2,7 +2,33 @@ import { Broadcast } from "@/echos";
 import { Box, Card, CardSection, Text, Title } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 
-function Overlay({ page, stream_key }: any) {
+interface IProps {
+    page: any;
+    stream_key?: string;
+    is_setting?: boolean;
+    colors?: IColors;
+}
+
+interface IColors {
+    border_color: string;
+    header_color: string;
+    header_text_color: string;
+    body_color: string;
+    body_text_color: string;
+}
+
+function Overlay({
+    page,
+    stream_key,
+    is_setting = false,
+    colors = {
+        border_color: "#FB4983",
+        header_color: "#FB4983",
+        header_text_color: "#fff",
+        body_color: "#000",
+        body_text_color: "#fafafa",
+    },
+}: IProps) {
     const [data, setData] = useState<any>(null);
 
     useEffect(() => {
@@ -22,23 +48,36 @@ function Overlay({ page, stream_key }: any) {
 
     return (
         <Card
-            className=" border-[#FB4983] border-[8px]"
-            classNames={{ section: "bg-gray-50" }}
+            style={{ borderColor: colors.border_color }}
+            className={`border-[8px]`}
             color="tanya-pink.3"
-            w={500}
+            w={is_setting ? "100%" : 500}
             radius={"lg"}
         >
-            <Card.Section bg={"tanya-pink.3"} py={"md"}>
-                <Title order={3} ta={"center"} c={"white"}>
-                    {data ? data.sender.name : "Tanyanya"}
+            <Card.Section bg={colors.header_color} py={"md"}>
+                <Title order={3} ta={"center"} c={colors.header_text_color}>
+                    {is_setting
+                        ? "John Doe"
+                        : data
+                        ? data.sender.name
+                        : "Tanyanya"}
                 </Title>
             </Card.Section>
-            <Card.Section>
-                <div className="prose max-w-prose">
-                    {data ? data.question : "Waiting for question..."}
+            <Card.Section bg={colors.body_color}>
+                <div
+                    className="prose max-w-prose"
+                    style={{
+                        color: colors.body_text_color,
+                    }}
+                >
+                    {is_setting
+                        ? "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum iste dicta nobis sit minus mollitia temporibus hic dolorem voluptas magnam deserunt, fugiat eos repudiandae quisquam delectus cupiditate cumque quae rerum?"
+                        : data
+                        ? data.question
+                        : "Waiting for question..."}
                 </div>
             </Card.Section>
-            <CardSection>
+            <CardSection bg={colors.body_color}>
                 <Text ta={"center"} size="sm" c="dimmed">
                     tanyanya.id/@{page.username}
                 </Text>

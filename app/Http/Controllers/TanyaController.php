@@ -13,7 +13,7 @@ class TanyaController extends Controller
     public function index(String $username)
     {
         $page = Page::where('username', $username)->with(['user' => function ($user) {
-            $user->select('id', 'name');
+            $user->select('id', 'name', 'profile_photo_path');
         }])->firstOrFail();
         return Inertia::render('Tanya', [
             'page' => $page,
@@ -64,11 +64,29 @@ class TanyaController extends Controller
 
     public function overlay(String $key)
     {
-        $page = Page::where('overlay_key', $key)->select(['id', 'username'])->firstOrFail();
+        $page = Page::where('overlay_key', $key)->select([
+            'id',
+            'username',
+            'header_color',
+            'header_text_color',
+            'border_color',
+            'body_color',
+            'body_text_color',
+        ])->firstOrFail();
+
+        $colors = [
+            'header_color' => $page->header_color,
+            'header_text_color' => $page->header_text_color,
+            'border_color' => $page->border_color,
+            'body_color' => $page->body_color,
+            'body_text_color' => $page->body_text_color,
+
+        ];
 
         return Inertia::render('Overlay', [
             'page' => $page,
             'stream_key' => $key,
+            'colors' => $colors,
         ]);
     }
 }

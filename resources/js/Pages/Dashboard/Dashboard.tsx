@@ -1,6 +1,7 @@
 import QuestionCard from "@/Components/dashboard/QuestionCard";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import {
+    Box,
     Grid,
     Group,
     Loader,
@@ -9,6 +10,8 @@ import {
     Text,
     Title,
 } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { notifications } from "@mantine/notifications";
 import axios from "axios";
 import React, { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -42,7 +45,42 @@ function Dashboard({}: IProps) {
 
     const streamQuestion = (question: string | number) => {
         axios.put(route("streamQuestion", question)).then((res) => {
-            console.log(res);
+            notifications.show({
+                title: "Question streamed",
+                message:
+                    "Question has been streamed to the overlay. If you don't see it, please wait a moment or refresh the page and restream the question.",
+                color: "teal",
+            });
+        });
+    };
+
+    const deleteQuestion = (question: string | number) => {
+        modals.openConfirmModal({
+            title: "Delete Question",
+            children: (
+                <Text>
+                    Are you sure you want to delete this question? This action
+                    cannot be undone.
+                </Text>
+            ),
+            centered: true,
+            labels: {
+                confirm: "Delete Question",
+                cancel: "Cancel",
+            },
+            confirmProps: { color: "red" },
+            onConfirm: () => {
+                axios.delete(route("deleteQuestion", question)).then((res) => {
+                    setQuestions((prev) =>
+                        prev.filter((q) => q.id !== question)
+                    );
+                    notifications.show({
+                        title: "Question deleted",
+                        message: "Question has been deleted successfully",
+                        color: "green",
+                    });
+                });
+            },
         });
     };
 
@@ -82,7 +120,7 @@ function Dashboard({}: IProps) {
                     </Text>
                 }
             >
-                <SimpleGrid cols={{ base: 1, md: 2 }}>
+                <div className="columns-1 md:columns-2 gap-6 space-y-6">
                     {questions.map((question, index) => {
                         return (
                             <QuestionCard
@@ -92,10 +130,11 @@ function Dashboard({}: IProps) {
                                 question={question.question}
                                 date={question.created_at}
                                 onStream={streamQuestion}
+                                onDelete={deleteQuestion}
                             />
                         );
                     })}
-                </SimpleGrid>
+                </div>
             </InfiniteScroll>
         </DashboardLayout>
     );

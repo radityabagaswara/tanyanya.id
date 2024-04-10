@@ -20,6 +20,7 @@ import {
 import React from "react";
 
 function Tanya({ page }: any) {
+    console.log(page);
     const { user }: any = usePage().props.auth;
     const form = useForm({
         question: "",
@@ -60,22 +61,24 @@ function Tanya({ page }: any) {
                         </Box>
                         <Box
                             pos={"absolute"}
-                            bottom={{ base: -60, md: -80 }}
+                            bottom={{ base: -60, md: -70, lg: -100 }}
                             w={"100%"}
                         >
                             <Group justify="center">
-                                <Box h={{ base: 100, sm: 120, md: 150 }}>
-                                    <Avatar
-                                        w={"auto"}
-                                        h={"100%"}
-                                        src={page.user.profile_photo_url}
-                                        radius={"100%"}
-                                    />
-                                </Box>
+                                <Avatar
+                                    h={{ base: 100, sm: 120, md: 150, lg: 200 }}
+                                    w={{ base: 100, sm: 120, md: 150, lg: 200 }}
+                                    src={page.user.profile_photo_url}
+                                    radius={"100%"}
+                                />
                             </Group>
                         </Box>
                     </Box>
-                    <Title order={4} ta={"center"} mt={{ base: 75, md: 90 }}>
+                    <Title
+                        order={4}
+                        ta={"center"}
+                        mt={{ base: 75, md: 90, lg: 110 }}
+                    >
                         {page.user.name}
                     </Title>
                     <Text ta={"center"} c={"dimmed"}>

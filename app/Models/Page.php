@@ -26,6 +26,12 @@ class Page extends Model
         'allow_anon_questions',
         'user_id',
         'overlay_key',
+        'border_color',
+        'header_color',
+        'header_text_color',
+        'body_color',
+        'body_text_color',
+
     ];
 
     protected $append = [

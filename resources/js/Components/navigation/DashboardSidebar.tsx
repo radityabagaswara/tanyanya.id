@@ -6,6 +6,8 @@ import {
     IconLayoutDashboard,
     IconSettings2,
     IconCalendarStats,
+    IconHomeQuestion,
+    IconBroadcast,
 } from "@tabler/icons-react";
 import { Link } from "@inertiajs/react";
 import { LinksGroupProps, NavbarLinksGroup } from "./NavbarLinkGroup";
@@ -17,13 +19,14 @@ const links: LinksGroupProps[] = [
         href: route("dashboard"),
     },
     {
-        label: "Releases",
-        icon: IconCalendarStats,
-        links: [
-            { label: "Upcoming releases", href: "/" },
-            { label: "Previous releases", href: "/" },
-            { label: "Releases schedule", href: "/" },
-        ],
+        label: "Page Settings",
+        icon: IconHomeQuestion,
+        href: route("page.index"),
+    },
+    {
+        label: "Overlay",
+        icon: IconBroadcast,
+        href: route("dashboard.overlay"),
     },
 ];
 

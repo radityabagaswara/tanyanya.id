@@ -26,9 +26,17 @@ interface IProps {
     id: number;
     date: string;
     onStream?: (id: string | number) => void;
+    onDelete?: (id: string | number) => void;
 }
 
-function QuestionCard({ user, question, id, date, onStream }: IProps) {
+function QuestionCard({
+    user,
+    question,
+    id,
+    date,
+    onStream,
+    onDelete,
+}: IProps) {
     return (
         <Card>
             <Card.Section pb={0}>
@@ -66,9 +74,11 @@ function QuestionCard({ user, question, id, date, onStream }: IProps) {
                             <Divider my={"sm"} />
                             <Menu.Item
                                 leftSection={<IconTrash />}
-                                component={Link}
-                                href="#"
+                                component={"button"}
                                 color="red"
+                                onClick={() => {
+                                    onDelete && onDelete(id);
+                                }}
                             >
                                 Delete Question
                             </Menu.Item>

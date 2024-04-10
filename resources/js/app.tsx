@@ -9,6 +9,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { MantineProvider, createTheme } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from "@mantine/modals";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -66,7 +67,9 @@ createInertiaApp({
         root.render(
             <MantineProvider theme={theme}>
                 <Notifications />
-                <App {...props} />
+                <ModalsProvider>
+                    <App {...props} />
+                </ModalsProvider>
             </MantineProvider>
         );
     },
