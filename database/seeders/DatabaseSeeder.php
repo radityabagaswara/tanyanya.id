@@ -2,10 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Question;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\Uid\Ulid;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,10 +24,22 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        $user->page()->create([
+        $page = $user->page()->create([
             'username' => 'testuser',
             'is_accepting_questions' => false,
             'allow_anon_questions' => false,
+            'overlay_key' => Ulid::generate(),
         ]);
+
+        // random question
+        for ($i = 0; $i < 50; $i++) {
+            Question::create([
+                'question' => 'Question ' . $i,
+                'is_anonymous' => false,
+                'sender_id' => $user->id,
+                'page_id' => $page->id,
+            ]);
+            sleep(1);
+        }
     }
 }

@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_socials', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->ulid('id')->primary();
             $table->string('name');
             $table->string('url');
-            $table->foreignUuid('page_id')->constrained('pages')->cascadeOnDelete();
+            $table->foreignUlid('page_id')->constrained('pages')->cascadeOnDelete();
             $table->timestamps();
         });
     }

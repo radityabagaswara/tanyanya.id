@@ -1,4 +1,5 @@
 import "./bootstrap";
+// import "./echo";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "../css/app.css";
@@ -42,6 +43,11 @@ const theme = createTheme({
         CardSection: {
             defaultProps: {
                 p: "lg",
+            },
+        },
+        Loader: {
+            defaultProps: {
+                type: "dots",
             },
         },
     },

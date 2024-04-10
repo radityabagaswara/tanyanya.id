@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use App\Models\User;
+use Faker\Provider\Uuid;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -53,6 +54,7 @@ class RegisteredUserController extends Controller
             'username' => $username,
             'is_accepting_questions' => false,
             'allow_anon_questions' => false,
+            'overlay_key' => Uuid::uuid(),
         ]);
 
         event(new Registered($user));

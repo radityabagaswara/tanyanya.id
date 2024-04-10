@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('questions', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->ulid('id')->primary();
             $table->text('question');
-            $table->foreignUuid('page_id')->constrained('pages')->cascadeOnDelete();
-            $table->foreignUuid('sender_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignUlid('page_id')->constrained('pages')->cascadeOnDelete();
+            $table->foreignUlid('sender_id')->constrained('users')->cascadeOnDelete();
             $table->boolean('is_anonymous')->default(false);
+            $table->boolean('streamed')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

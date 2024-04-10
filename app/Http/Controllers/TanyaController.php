@@ -61,4 +61,14 @@ class TanyaController extends Controller
             return back()->with('error', ['title' => 'Failed to submit question', 'message' => 'An error occurred while submitting your question.']);
         }
     }
+
+    public function overlay(String $key)
+    {
+        $page = Page::where('overlay_key', $key)->select(['id', 'username'])->firstOrFail();
+
+        return Inertia::render('Overlay', [
+            'page' => $page,
+            'stream_key' => $key,
+        ]);
+    }
 }

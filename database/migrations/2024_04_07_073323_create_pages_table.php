@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pages', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->ulid('id')->primary();
             $table->string('header_image_path')->nullable();
             $table->string('username');
             $table->date('username_updated_at')->nullable();
             $table->text('bio')->nullable()->default('Welcome to my page, feel free to ask me any questions!');
             $table->boolean('is_accepting_questions')->default(false);
             $table->boolean('allow_anon_questions')->default(false);
-            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignUlid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->ulid('overlay_key');
             $table->softDeletes();
             $table->timestamps();
         });

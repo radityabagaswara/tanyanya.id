@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Page extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+    use HasFactory, HasUlids, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -25,6 +25,7 @@ class Page extends Model
         'is_accepting_questions',
         'allow_anon_questions',
         'user_id',
+        'overlay_key',
     ];
 
     protected $append = [
