@@ -6,6 +6,7 @@ use App\Http\Controllers\OverlaySettingsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TanyaController;
+use App\Http\Controllers\UserSettingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::post("/page/banner", [PageController::class, 'updatePageBanner'])->name('page.banner');
     Route::put('/page/settings', [PageController::class, 'updateSettings'])->name('page.settings');
 
+    Route::get('/dashboard/settings', [UserSettingController::class, 'index'])->name('dashboard.setting');
+
     Route::get("/dashboard/overlay", [OverlaySettingsController::class, 'index'])->name('dashboard.overlay');
     Route::put("/dashboard/overlay", [OverlaySettingsController::class, 'update'])->name('dashboard.overlay.update');
     Route::post("/dashboard/overlay/reset", [OverlaySettingsController::class, 'resetColor'])->name('dashboard.overlay.reset');
@@ -50,7 +53,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
 });
 
 require __DIR__ . '/auth.php';

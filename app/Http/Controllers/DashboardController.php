@@ -37,7 +37,7 @@ class DashboardController extends Controller
             $question->sender_id = null;
         }
 
-        event(new OverlayBroadcastEvent(overlay_key: $overlay_key, question: $question));
+        broadcast(new OverlayBroadcastEvent(overlay_key: $overlay_key, question: $question));
 
         return (response()->json(['message' => 'success']));
     }

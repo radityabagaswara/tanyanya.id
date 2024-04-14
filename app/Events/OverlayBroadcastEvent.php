@@ -30,7 +30,7 @@ class OverlayBroadcastEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        Log::info("SendMessageEvent broadcastOn");
+        Log::info("SendMessageEvent broadcastOn" . $this->overlay_key);
         return new Channel('overlay-channel.' . $this->overlay_key);
     }
 }
