@@ -2,6 +2,8 @@ import "./bootstrap";
 // import "./echo";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+import "@mantine/carousel/styles.css";
+
 import "../css/app.css";
 
 import { createRoot } from "react-dom/client";
@@ -59,7 +61,7 @@ createInertiaApp({
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.tsx`,
-            import.meta.glob("./Pages/**/*.tsx")
+            import.meta.glob("./Pages/**/*.tsx"),
         ),
     setup({ el, App, props }) {
         const root = createRoot(el);
@@ -70,7 +72,7 @@ createInertiaApp({
                 <ModalsProvider>
                     <App {...props} />
                 </ModalsProvider>
-            </MantineProvider>
+            </MantineProvider>,
         );
     },
     progress: {

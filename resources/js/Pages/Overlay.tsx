@@ -32,6 +32,7 @@ function Overlay({
     const [data, setData] = useState<any>(null);
 
     useEffect(() => {
+        if (is_setting) return;
         const broadcast = Broadcast();
         const channel = broadcast.channel("overlay-channel." + stream_key);
         channel.listen("OverlayBroadcastEvent", (data: any) => {
@@ -42,6 +43,7 @@ function Overlay({
             }
         });
         return () => {
+            if (is_setting) return;
             broadcast.leave("overlay-channel." + stream_key);
         };
     }, []);
@@ -59,8 +61,8 @@ function Overlay({
                     {is_setting
                         ? "John Doe"
                         : data
-                        ? data.sender.name
-                        : "Tanyanya"}
+                          ? data.sender.name
+                          : "Tanyanya"}
                 </Title>
             </Card.Section>
             <Card.Section bg={colors.body_color}>
@@ -73,8 +75,8 @@ function Overlay({
                     {is_setting
                         ? "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum iste dicta nobis sit minus mollitia temporibus hic dolorem voluptas magnam deserunt, fugiat eos repudiandae quisquam delectus cupiditate cumque quae rerum?"
                         : data
-                        ? data.question
-                        : "Waiting for question..."}
+                          ? data.question
+                          : "Waiting for question..."}
                 </div>
             </Card.Section>
             <CardSection bg={colors.body_color}>

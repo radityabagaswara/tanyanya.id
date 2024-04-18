@@ -2,6 +2,7 @@
 
 use App\Events\SendMessageEvent;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\OverlaySettingsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
@@ -27,6 +28,7 @@ Route::get("/test", function () {
 
 Route::get('/@{page}', [TanyaController::class, 'index'])->name('tanya');
 Route::get('/overlay/{key}', [TanyaController::class, 'overlay'])->name('overlay');
+Route::get('/explore', [ExploreController::class, 'index'])->name('explore');
 
 Route::middleware('auth')->group(function () {
     Route::get('/self/questions', [DashboardController::class, 'getQuestions'])->name('dashboard.getQuestions');
@@ -37,7 +39,6 @@ Route::middleware('auth')->group(function () {
     Route::post("/profile/picture", [PageController::class, 'updateProfilePicture'])->name('profile.picture');
     Route::post("/page/banner", [PageController::class, 'updatePageBanner'])->name('page.banner');
     Route::put('/page/settings', [PageController::class, 'updateSettings'])->name('page.settings');
-
 
     Route::post('/dashboard/settings/email', [UserSettingController::class, 'changeEmail'])->name('dashboard.setting.email');
     Route::post('/dashboard/settings/notification', [UserSettingController::class, 'notificationSetting'])->name('dashboard.setting.notification');

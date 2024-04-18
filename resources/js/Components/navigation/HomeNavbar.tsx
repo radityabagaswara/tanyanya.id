@@ -1,5 +1,5 @@
 import { PageProps } from "@/types";
-import { router, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import {
     Group,
     Button,
@@ -11,8 +11,21 @@ import {
     rem,
     Image,
     Avatar,
+    Anchor,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+
+interface INavLink {
+    label: string;
+    href: string;
+}
+
+const navigation: INavLink[] = [
+    {
+        label: "Explore",
+        href: "#",
+    },
+];
 
 export function HomeNavBar() {
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -30,32 +43,17 @@ export function HomeNavBar() {
                         w={150}
                     />
                     <Group h="100%" gap={0} visibleFrom="sm">
-                        <a
-                            href="/"
-                            className={
-                                "link flex items-center h-full px-4 text-base font-medium "
-                            }
-                        >
-                            Home
-                        </a>
-
-                        <a
-                            href="#"
-                            className={
-                                "link flex items-center h-full px-4 text-base font-medium "
-                            }
-                        >
-                            Learn
-                        </a>
-                        <a
-                            href="#"
-                            className={
-                                "link flex items-center h-full px-4 text-base font-medium "
-                            }
-                        >
-                            Academy
-                        </a>
-
+                        {navigation.map((value, index) => {
+                            return (
+                                <Anchor
+                                    key={index}
+                                    component={Link}
+                                    href={value.href}
+                                >
+                                    {value.label}
+                                </Anchor>
+                            );
+                        })}
                         <Group visibleFrom="sm">
                             {page.auth.user ? (
                                 <Button
@@ -100,38 +98,23 @@ export function HomeNavBar() {
                 onClose={closeDrawer}
                 size="100%"
                 padding="md"
-                title="Navigation"
                 hiddenFrom="sm"
                 zIndex={1000000}
             >
                 <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
                     <Divider my="sm" />
 
-                    <a
-                        href="#"
-                        className={
-                            "link flex items-center h-full px-4 text-base font-medium "
-                        }
-                    >
-                        Home
-                    </a>
-
-                    <a
-                        href="#"
-                        className={
-                            "link flex items-center h-full px-4 text-base font-medium "
-                        }
-                    >
-                        Learn
-                    </a>
-                    <a
-                        href="#"
-                        className={
-                            "link flex items-center h-full px-4 text-base font-medium "
-                        }
-                    >
-                        Academy
-                    </a>
+                    {navigation.map((value, index) => {
+                        return (
+                            <Anchor
+                                key={index}
+                                component={Link}
+                                href={value.href}
+                            >
+                                {value.label}
+                            </Anchor>
+                        );
+                    })}
 
                     <Divider my="sm" />
 
