@@ -1,19 +1,24 @@
 import FlashMessage from "@/Components/FlashMessage";
 import { DashboardSidebar } from "@/Components/navigation/DashboardSidebar";
-import { usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import {
     ActionIcon,
+    Anchor,
     AppShell,
     Avatar,
     Burger,
+    Button,
     Code,
     Group,
     Image,
     LoadingOverlay,
+    Menu,
     Space,
+    Text,
 } from "@mantine/core";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import { IconQuestionMark, IconSettings } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
 interface Props {
@@ -77,20 +82,66 @@ const DashboardLayout = ({ children, title, loading }: Props) => {
                             size="sm"
                         />
                         <Group align="center" justify="space-between">
-                            <Image
-                                src={
-                                    "https://velcro.is3.cloudhost.id/tanyanyaid_logotext_md-08.png"
-                                }
-                                w={150}
-                            />
+                            <Link href="/">
+                                <Image
+                                    src={
+                                        "https://velcro.is3.cloudhost.id/tanyanyaid_logotext_md-08.png"
+                                    }
+                                    w={150}
+                                />
+                            </Link>
                             <Code fw={700}>v3.1.2</Code>
                         </Group>
                     </Group>
-                    <Avatar
-                        component="button"
-                        radius={"xl"}
-                        src={auth?.user?.profile_photo_url}
-                    />
+                    <Menu width={200}>
+                        <Menu.Target>
+                            <Avatar
+                                component="button"
+                                radius={"xl"}
+                                src={auth?.user?.profile_photo_url}
+                            />
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                            <Menu.Item>
+                                <Text size="sm" c="dimmed">
+                                    {auth?.user?.name}
+                                </Text>
+                            </Menu.Item>
+                            <Menu.Divider my="sm" />
+                            <Menu.Item>
+                                <Button
+                                    p={0}
+                                    component={Link}
+                                    href={route("page.index")}
+                                    variant="transparent"
+                                >
+                                    Profile / Page Setting
+                                </Button>
+                            </Menu.Item>
+                            <Menu.Item>
+                                <Button
+                                    p={0}
+                                    component={Link}
+                                    href={route("dashboard.setting")}
+                                    variant="transparent"
+                                >
+                                    User Setting
+                                </Button>
+                            </Menu.Item>
+                            <Menu.Divider my="sm" />
+                            <Menu.Item>
+                                <Button
+                                    p={0}
+                                    color="red.5"
+                                    component={Link}
+                                    href="route('logout')"
+                                    variant="transparent"
+                                >
+                                    Logout
+                                </Button>
+                            </Menu.Item>
+                        </Menu.Dropdown>
+                    </Menu>
                 </Group>
             </AppShell.Header>
             <AppShell.Navbar p="md">

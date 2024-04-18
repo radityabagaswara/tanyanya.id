@@ -4,11 +4,12 @@ import React from "react";
 
 interface IProps {
     onSubmit?: (data: any) => void;
+    email?: string;
 }
 
-function ChangeEmailForm({ onSubmit }: IProps) {
+function ChangeEmailForm({ onSubmit, email }: IProps) {
     const form = useForm({
-        email: "",
+        email: email ?? "",
     });
 
     const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,8 +20,15 @@ function ChangeEmailForm({ onSubmit }: IProps) {
     return (
         <form onSubmit={submitForm}>
             <Stack>
-                <TextInput label="New Email" placeholder="john@doe.com" />
-
+                <TextInput
+                    error={form.errors.email}
+                    value={form.data.email}
+                    onChange={(e) =>
+                        form.setData("email", e.currentTarget.value)
+                    }
+                    label="Email"
+                    placeholder="john@doe.com"
+                />
                 <Space m="md" />
                 <Group justify="end">
                     <Button variant="outline" type="submit" color="red.5">

@@ -1,12 +1,17 @@
 import ChangeEmailForm from "@/Components/dashboard/settings/ChangeEmailForm";
 import ChangePasswordForm from "@/Components/dashboard/settings/ChangePasswordForm";
+import NotificationSettingForm from "@/Components/dashboard/settings/NotificationSettingForm";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Button, Card, Group, Space, TextInput, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
 import React from "react";
 
-function SettingPage() {
+interface IProps {
+    user: any;
+}
+
+function SettingPage({ user }: IProps) {
     const changeEmail = (form: any) => {
         if (!form) return;
 
@@ -18,15 +23,22 @@ function SettingPage() {
                 confirm: "Change Email",
                 cancel: "Cancel",
             },
-            onConfirm: () => {},
+            onConfirm: () => {
+                form.post(route("dashboard.setting.email"));
+            },
         });
     };
 
     const changePassword = (form: any) => {
+        console.log(form);
         if (!form) return;
         form.post(route("dashboard.setting.password"));
     };
 
+    const changeNotification = (form: any) => {
+        if (!form) return;
+        form.post(route("dashboard.setting.notification"));
+    };
     return (
         <DashboardLayout>
             <Card>
@@ -34,7 +46,10 @@ function SettingPage() {
                     <Title order={4}>Change Email</Title>
                 </Card.Section>
                 <Card.Section pt="sm">
-                    <ChangeEmailForm onSubmit={changeEmail} />
+                    <ChangeEmailForm
+                        email={user.email}
+                        onSubmit={changeEmail}
+                    />
                 </Card.Section>
             </Card>
             <Space m="md" />
@@ -51,7 +66,12 @@ function SettingPage() {
                 <Card.Section pb="sm">
                     <Title order={4}>Notifications</Title>
                 </Card.Section>
-                <Card.Section pt="sm"></Card.Section>
+                <Card.Section pt="sm">
+                    <NotificationSettingForm
+                        data={user}
+                        onSubmit={changeNotification}
+                    />
+                </Card.Section>
             </Card>
         </DashboardLayout>
     );

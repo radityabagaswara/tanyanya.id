@@ -3,14 +3,14 @@ import { notifications } from "@mantine/notifications";
 import React, { useEffect } from "react";
 
 const FlashMessage = () => {
-    const { flash }: any = usePage().props;
+    const { flash, errors }: any = usePage().props;
 
     useEffect(() => {
         if (flash.success) {
             notifications.show({
                 title: flash.success.title,
                 message: flash.success.message,
-                color: "green",
+                color: "green.5",
             });
         }
 
@@ -18,7 +18,15 @@ const FlashMessage = () => {
             notifications.show({
                 title: flash.error.title,
                 message: flash.error.message,
-                color: "red",
+                color: "red.5",
+            });
+        }
+
+        if (errors && errors.title && errors.message) {
+            notifications.show({
+                title: errors.title,
+                message: errors.message,
+                color: "red.5",
             });
         }
     }, [flash]);

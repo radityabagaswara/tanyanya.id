@@ -38,8 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::post("/page/banner", [PageController::class, 'updatePageBanner'])->name('page.banner');
     Route::put('/page/settings', [PageController::class, 'updateSettings'])->name('page.settings');
 
-    Route::get('/dashboard/settings', [UserSettingController::class, 'index'])->name('dashboard.setting');
+
+    Route::post('/dashboard/settings/email', [UserSettingController::class, 'changeEmail'])->name('dashboard.setting.email');
+    Route::post('/dashboard/settings/notification', [UserSettingController::class, 'notificationSetting'])->name('dashboard.setting.notification');
     Route::post('/dashboard/settings/password', [UserSettingController::class, 'changePassword'])->name('dashboard.setting.password');
+    Route::get('/dashboard/settings', [UserSettingController::class, 'index'])->name('dashboard.setting');
 
     Route::get("/dashboard/overlay", [OverlaySettingsController::class, 'index'])->name('dashboard.overlay');
     Route::put("/dashboard/overlay", [OverlaySettingsController::class, 'update'])->name('dashboard.overlay.update');

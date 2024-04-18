@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('username');
             $table->date('username_updated_at')->nullable();
             $table->text('bio')->nullable()->default('Welcome to my page, feel free to ask me any questions!');
-            $table->number('minimum_donation')->default(0);
+            $table->integer('minimum_donation')->default(0);
             $table->boolean('is_accepting_questions')->default(false);
             $table->boolean('allow_anon_questions')->default(false);
             $table->foreignUlid('user_id')->constrained('users')->cascadeOnDelete();

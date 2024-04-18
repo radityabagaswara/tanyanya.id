@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->date('birth_date')->nullable();
             $table->string('profile_photo_path')->nullable();
+            $table->boolean('new_question_notification')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

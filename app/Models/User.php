@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'birth_date',
         'profile_photo_path',
+        'new_question_notification'
     ];
 
     /**
@@ -67,6 +68,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'new_question_notification' => 'boolean',
         ];
     }
 
