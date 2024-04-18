@@ -15,6 +15,17 @@ class TanyaController extends Controller
         $page = Page::where('username', $username)->with(['user' => function ($user) {
             $user->select('id', 'name', 'profile_photo_path');
         }])->firstOrFail();
+
+        DB::beginTransaction();
+        try {
+            $page->update([
+                'total_page_visit' => $page->total_page_visit + 1,
+            ]);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+
         return Inertia::render('Tanya', [
             'page' => $page,
         ]);

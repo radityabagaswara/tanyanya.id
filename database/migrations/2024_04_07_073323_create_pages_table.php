@@ -21,6 +21,8 @@ return new class extends Migration
             $table->boolean('is_accepting_questions')->default(false);
             $table->boolean('allow_anon_questions')->default(false);
             $table->foreignUlid('user_id')->constrained('users')->cascadeOnDelete();
+            $table->bigInteger('total_page_visit')->default(0);
+            $table->string('category')->nullable();
             $table->ulid('overlay_key');
             $table->string('border_color')->default('#FB4983');
             $table->string('header_color')->default('#FB4983');

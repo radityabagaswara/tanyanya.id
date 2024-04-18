@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // random question
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $faker = Factory::create();
             Question::create([
                 'question' => $faker->sentence(180),

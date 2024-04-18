@@ -32,7 +32,8 @@ class Page extends Model
         'body_color',
         'body_text_color',
         'minimum_donation',
-
+        'total_page_visit',
+        'category'
     ];
 
     protected $append = [
