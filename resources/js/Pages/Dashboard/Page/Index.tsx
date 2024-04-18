@@ -9,6 +9,7 @@ import {
     Grid,
     Group,
     Image,
+    NumberInput,
     Space,
     Stack,
     Switch,
@@ -28,6 +29,7 @@ function PageIndex({ page }: any) {
     });
 
     const settingForm = useForm({
+        minimum_donation: page?.minimum_donation || 0,
         is_accepting_questions: page?.is_accepting_questions || false,
         allow_anon_questions: page?.allow_anon_questions || false,
     });
@@ -157,7 +159,7 @@ function PageIndex({ page }: any) {
                                 onChange={(e) =>
                                     form.setData(
                                         "username",
-                                        e.currentTarget.value
+                                        e.currentTarget.value,
                                     )
                                 }
                                 error={form.errors.username}
@@ -190,6 +192,13 @@ function PageIndex({ page }: any) {
                 <Card.Section pt={"sm"}>
                     <form onSubmit={updateSettingForm}>
                         <Stack>
+                            <NumberInput
+                                label="Minimum Donation to Ask"
+                                description="Insert 0 to allow non Donation Ask"
+                                hideControls
+                                leftSection="Rp"
+                                defaultValue={0}
+                            />
                             <Switch
                                 label="Accpeting new questions"
                                 checked={
@@ -198,7 +207,7 @@ function PageIndex({ page }: any) {
                                 onChange={(e) =>
                                     settingForm.setData(
                                         "is_accepting_questions",
-                                        e.currentTarget.checked
+                                        e.currentTarget.checked,
                                     )
                                 }
                             />
@@ -208,7 +217,7 @@ function PageIndex({ page }: any) {
                                 onChange={(e) =>
                                     settingForm.setData(
                                         "allow_anon_questions",
-                                        e.currentTarget.checked
+                                        e.currentTarget.checked,
                                     )
                                 }
                             />

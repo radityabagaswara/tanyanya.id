@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/page/settings', [PageController::class, 'updateSettings'])->name('page.settings');
 
     Route::get('/dashboard/settings', [UserSettingController::class, 'index'])->name('dashboard.setting');
+    Route::post('/dashboard/settings/password', [UserSettingController::class, 'changePassword'])->name('dashboard.setting.password');
 
     Route::get("/dashboard/overlay", [OverlaySettingsController::class, 'index'])->name('dashboard.overlay');
     Route::put("/dashboard/overlay", [OverlaySettingsController::class, 'update'])->name('dashboard.overlay.update');

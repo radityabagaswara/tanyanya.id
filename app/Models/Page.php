@@ -31,6 +31,7 @@ class Page extends Model
         'header_text_color',
         'body_color',
         'body_text_color',
+        'minimum_donation',
 
     ];
 
@@ -69,5 +70,4 @@ class Page extends Model
     {
         return $this->hasMany(Question::class);
     }
-
 }

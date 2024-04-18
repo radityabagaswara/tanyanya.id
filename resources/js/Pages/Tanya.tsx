@@ -106,7 +106,7 @@ function Tanya({ page }: any) {
                                 onChange={(e) =>
                                     form.setData(
                                         "question",
-                                        e.currentTarget.value
+                                        e.currentTarget.value,
                                     )
                                 }
                                 styles={{
@@ -131,10 +131,10 @@ function Tanya({ page }: any) {
                                         !user
                                             ? "You must be Logged in to change this."
                                             : !page.is_accepting_questions
-                                            ? "This page is not accepting questions."
-                                            : !page.allow_anon_questions
-                                            ? "This page does not allow anonymous questions."
-                                            : "Change question visibility."
+                                              ? "This page is not accepting questions."
+                                              : !page.allow_anon_questions
+                                                ? "This page does not allow anonymous questions."
+                                                : "Change question visibility."
                                     }
                                 >
                                     <Box>
@@ -155,7 +155,7 @@ function Tanya({ page }: any) {
                                             onChange={(e) =>
                                                 form.setData(
                                                     "is_anonymous",
-                                                    e.currentTarget.checked
+                                                    e.currentTarget.checked,
                                                 )
                                             }
                                         />

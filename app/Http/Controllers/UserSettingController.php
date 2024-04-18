@@ -26,7 +26,6 @@ class UserSettingController extends Controller
             'new_password.min' => 'Password must be at least 8 characters',
             'confirm_password.required' => 'Please confirm your password',
             'confirm_password.same' => 'Passwords do not match'
-
         ]);
 
         $user = User::find(auth()->id());

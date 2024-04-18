@@ -24,6 +24,7 @@ function SettingPage() {
 
     const changePassword = (form: any) => {
         if (!form) return;
+        form.post(route("dashboard.setting.password"));
     };
 
     return (
