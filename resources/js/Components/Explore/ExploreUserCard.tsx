@@ -1,19 +1,35 @@
 import { Link } from "@inertiajs/react";
-import { Avatar, Badge, Card, Image, Stack, Text } from "@mantine/core";
+import { Avatar, Badge, Box, Card, Image, Stack, Text } from "@mantine/core";
 import React from "react";
 
-function ExploreUserCard() {
+interface IProps {
+    name: string;
+    username: string;
+    avatar: string;
+    banner: string;
+    description: string;
+    category: string;
+}
+
+function ExploreUserCard({
+    name,
+    username,
+    avatar,
+    banner,
+    description,
+    category,
+}: IProps) {
     return (
-        <Link href="/@testuser">
-            <Card>
+        <Link href={`/@${username}`}>
+            <Card className={"hover:border-pink-500 transition-all"}>
                 <Card.Section p={0} pos={"relative"}>
                     <Image
-                        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+                        src={banner}
                         height={"auto"}
                         className="aspect-video"
                     />
                     <Avatar
-                        src="https://trakteer.id/storage/images/avatar/ava-etJ3DKYN3YeMxhqNMMPZyfZgI5tiec6O1676126414.JPG"
+                        src={avatar}
                         pos={"absolute"}
                         bottom={"-2rem"}
                         left={"1rem"}
@@ -23,13 +39,14 @@ function ExploreUserCard() {
                 </Card.Section>
                 <Card.Section pt={"3rem"}>
                     <Stack gap={"xs"}>
-                        <Text fw={600}>Erika Su</Text>
-                        <Text c="dimmed">
-                            Lorem ipsum dolor sit amet, qui minim labore
-                            adipisicing minim sint cillum sint consectetur
-                            cupidatat.
-                        </Text>
-                        <Badge variant="light">Cosplay</Badge>
+                        <Box>
+                            <Text fw={600}>{name}</Text>
+                            <Text c="dimmed" size="sm">
+                                @{username}
+                            </Text>
+                        </Box>
+                        <Text c="dimmed">{description}</Text>
+                        {category && <Badge variant="light">{category}</Badge>}
                     </Stack>
                 </Card.Section>
             </Card>

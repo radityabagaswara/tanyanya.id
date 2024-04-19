@@ -49,7 +49,6 @@ class PageController extends Controller
 
             DB::commit();
             return back()->with('success', ['title' => "Successfully updated!", 'meesage' => 'Profile Picture has been updated.']);
-
         } catch (Exception $e) {
             DB::rollBack();
             return back()->with('error', ['title' => "Failed to change profile picture", 'meesage' => 'An error occurred while updating your profile picture.']);
@@ -81,7 +80,6 @@ class PageController extends Controller
 
             DB::commit();
             return back()->with('success', ['title' => "Successfully updated!", 'meesage' => 'Page banner has been updated.']);
-
         } catch (Exception $e) {
             DB::rollBack();
             return back()->with('error', ['title' => "Failed to change Page banner", 'meesage' => 'An error occurred while updating your Page banner.']);
@@ -132,24 +130,23 @@ class PageController extends Controller
             'username' => 'required|string|max:255|unique:pages,username,' . $page->id,
             'bio' => 'nullable|max:255',
             'name' => 'required|string|max:255',
+            'category' => 'nullable|string'
         ]);
 
         DB::beginTransaction();
         try {
             $page->username = $request->username;
             $page->bio = $request->bio;
+            $page->category = $request->category;
             $page->save();
-
             $user->name = $request->name;
             $user->save();
 
             DB::commit();
             return back()->with('success', ['title' => "Successfully updated!", 'meesage' => 'Profile has been updated.']);
-
         } catch (Exception $e) {
             DB::rollBack();
             return back()->with('error', ['title' => "Failed to update", 'meesage' => 'An error occurred while updating your profile.']);
-
         }
     }
 

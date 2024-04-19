@@ -90,6 +90,7 @@ function Tanya({ page }: any) {
                     <form onSubmit={submitQuestion}>
                         <Card.Section pb="sm">
                             <Textarea
+                                onDrop={(e) => e.preventDefault()}
                                 placeholder={
                                     !page.is_accepting_questions
                                         ? "This page is not accepting questions."

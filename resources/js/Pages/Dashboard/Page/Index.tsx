@@ -1,4 +1,5 @@
 import DashboardLayout from "@/Layouts/DashboardLayout";
+import { PageCategories } from "@/const/PageCategories";
 import { router, useForm, usePage } from "@inertiajs/react";
 import {
     AspectRatio,
@@ -10,6 +11,7 @@ import {
     Group,
     Image,
     NumberInput,
+    Select,
     Space,
     Stack,
     Switch,
@@ -26,6 +28,7 @@ function PageIndex({ page }: any) {
         name: auth?.user?.name,
         bio: page?.description,
         username: page?.username,
+        category: page?.category || null,
     });
 
     const settingForm = useForm({
@@ -176,6 +179,15 @@ function PageIndex({ page }: any) {
                                 }
                                 error={form.errors.bio}
                                 placeholder="Tell us about yourself."
+                            />
+                            <Select
+                                value={form.data.category}
+                                error={form.errors.category}
+                                onChange={(e) => form.setData("category", e)}
+                                label="Creator Category"
+                                data={PageCategories.map((value: string) => {
+                                    return { label: value, value: value };
+                                })}
                             />
                             <Group justify="end" mt={"md"}>
                                 <Button type="submit">Update Page</Button>
