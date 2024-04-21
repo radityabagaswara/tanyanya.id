@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/self/questions', [DashboardController::class, 'getQuestions'])->name('dashboard.getQuestions');
 
     Route::post('/page/{page}/question', [TanyaController::class, 'newQuestion'])->name('question.new');
+    Route::post('/page/{page}/questionsWithSupport', [TanyaController::class, 'newQuestionWithSupport'])->name('question.new.support');
 
     Route::resource('dashboard/page', PageController::class)->only(['index', 'update'])->names('page');
     Route::post("/profile/picture", [PageController::class, 'updateProfilePicture'])->name('profile.picture');

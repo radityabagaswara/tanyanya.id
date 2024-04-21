@@ -32,7 +32,7 @@ function PageIndex({ page }: any) {
     });
 
     const settingForm = useForm({
-        minimum_donation: page?.minimum_donation || 0,
+        allow_support_question: page?.allow_support_question || false,
         is_accepting_questions: page?.is_accepting_questions || false,
         allow_anon_questions: page?.allow_anon_questions || false,
     });
@@ -204,12 +204,18 @@ function PageIndex({ page }: any) {
                 <Card.Section pt={"sm"}>
                     <form onSubmit={updateSettingForm}>
                         <Stack>
-                            <NumberInput
-                                label="Minimum Donation to Ask"
-                                description="Insert 0 to allow non Donation Ask"
-                                hideControls
-                                leftSection="Rp"
-                                defaultValue={0}
+                            <Switch
+                                label="Accept Support Question"
+                                description="Allow fans to send you a donation via their question"
+                                checked={
+                                    settingForm.data.allow_support_question
+                                }
+                                onChange={(e) =>
+                                    settingForm.setData(
+                                        "allow_support_question",
+                                        e.currentTarget.checked,
+                                    )
+                                }
                             />
                             <Switch
                                 label="Accpeting new questions"

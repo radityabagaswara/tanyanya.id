@@ -156,6 +156,7 @@ class PageController extends Controller
         $request->validate([
             'is_accepting_questions' => 'required|boolean',
             'allow_anon_questions' => 'required|boolean',
+            'allow_support_question'=> 'required|boolean'
         ]);
         DB::beginTransaction();
         try {
@@ -163,6 +164,7 @@ class PageController extends Controller
 
             $page->is_accepting_questions = $request->is_accepting_questions;
             $page->allow_anon_questions = $request->allow_anon_questions;
+            $page->allow_support_question = $request->allow_support_question;
             $page->save();
             DB::commit();
             return back()->with('success', ['title' => "Successfully updated!", 'meesage' => 'Settings has been updated.']);

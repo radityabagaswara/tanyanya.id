@@ -1,3 +1,4 @@
+import useSnap from "@/Hooks/useSnaps";
 import AppLayout from "@/Layouts/AppLayout";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import {
@@ -10,18 +11,26 @@ import {
     Divider,
     Group,
     Image,
+    Modal,
+    NumberInput,
     Space,
+    Stack,
     Switch,
     Text,
     Textarea,
     Title,
     Tooltip,
 } from "@mantine/core";
-import React from "react";
+import { modals } from "@mantine/modals";
+import { notifications } from "@mantine/notifications";
+import axios from "axios";
+import React, { useState } from "react";
 
 function Tanya({ page }: any) {
-    console.log(page);
     const { user }: any = usePage().props.auth;
+    const [amount, setAmount] = useState(5000);
+    const { snapEmbed } = useSnap();
+    const [snapToken, setSnapToken] = useState("");
     const form = useForm({
         question: "",
         is_anonymous: !page.allow_anon_questions && user ? true : false,
@@ -29,9 +38,109 @@ function Tanya({ page }: any) {
 
     const submitQuestion = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        form.post(route("question.new", page.id), {
-            onSuccess: () => form.reset("question"),
-        });
+        if (page.allow_support_question)
+            return modals.openConfirmModal({
+                title: "Tanya",
+                children: (
+                    <Text>Choose how you want to send your question.</Text>
+                ),
+                labels: {
+                    confirm: "Just send a question",
+                    cancel: "Send question with support",
+                },
+                onConfirm: () => postQuestion(false),
+                onCancel: () => postQuestion(true),
+            });
+
+        postQuestion(false);
+    };
+
+    const postQuestion = (donation: boolean = false) => {
+        if (!donation) {
+            form.post(route("question.new", page.id), {
+                onSuccess: () => form.reset("question"),
+            });
+        } else {
+            modals.openConfirmModal({
+                title: "Support Creator",
+                id: "support-creator",
+                children: (
+                    <Stack>
+                        <Text>
+                            How much would you like to donate to support{" "}
+                            {page.user.name}?
+                        </Text>
+                        <NumberInput
+                            placeholder="5000"
+                            min={5000}
+                            max={10000000}
+                            description="Minimum support Rp 5.000"
+                            hideControls
+                            leftSection="Rp"
+                            value={amount}
+                            onChange={(value) => setAmount(Number(value))}
+                        />
+                    </Stack>
+                ),
+                labels: {
+                    confirm: "Send Question With Support",
+                    cancel: "Cancel",
+                },
+                onConfirm: () => {
+                    axios
+                        .post(route("question.new.support", page.id), {
+                            ...form.data,
+                            amount,
+                        })
+                        .then((res) => {
+                            if (!res.data.data?.snap_token) return;
+                            setSnapToken(res.data.data.snap_token);
+                            setTimeout(() => {
+                                snapEmbed(
+                                    res.data.data.snap_token,
+                                    "snap-embed",
+                                    {
+                                        onSuccess: (result: any) => {
+                                            form.reset("question");
+                                            setAmount(5000);
+                                            notifications.show({
+                                                title: "Success",
+                                                message:
+                                                    "Question sent successfully.",
+                                                color: "green.5",
+                                            });
+                                        },
+                                        onPending: (result: any) => {
+                                            notifications.show({
+                                                title: "Pending",
+                                                message:
+                                                    "Your payment is pending.",
+                                                color: "blue.5",
+                                            });
+                                        },
+                                        onClose: () => {
+                                            notifications.show({
+                                                title: "Canceled",
+                                                message:
+                                                    "Your payment is canceled.",
+                                                color: "red.5",
+                                            });
+                                        },
+                                    },
+                                );
+                            }, 500);
+                        })
+                        .catch((err) => {
+                            notifications.show({
+                                title: "Error",
+                                message:
+                                    "Something went wrong, please try again later.",
+                                color: "red.5",
+                            });
+                        });
+                },
+            });
+        }
     };
 
     return (
@@ -182,6 +291,21 @@ function Tanya({ page }: any) {
                         </Card.Section>
                     </form>
                 </Card>
+                <Modal
+                    opened={snapToken !== ""}
+                    onClose={() => null}
+                    closeOnEscape={false}
+                    closeOnClickOutside={false}
+                    withCloseButton={false}
+                    classNames={{ body: "p-0" }}
+                    radius={"lg"}
+                    size={320}
+                    centered
+                >
+                    <div className="w-[320px] h-[560px]">
+                        <div id="snap-embed" className="w-full h-full"></div>
+                    </div>
+                </Modal>
             </Container>
         </AppLayout>
     );

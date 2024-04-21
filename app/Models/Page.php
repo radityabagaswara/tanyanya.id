@@ -31,7 +31,7 @@ class Page extends Model
         'header_text_color',
         'body_color',
         'body_text_color',
-        'minimum_donation',
+        'allow_support_question',
         'total_page_visit',
         'category'
     ];

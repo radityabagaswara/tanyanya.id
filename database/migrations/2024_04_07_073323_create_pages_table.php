@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('username');
             $table->date('username_updated_at')->nullable();
             $table->text('bio')->nullable()->default('Welcome to my page, feel free to ask me any questions!');
-            $table->integer('minimum_donation')->default(0);
+            $table->boolean('allow_support_question')->default(false);
             $table->boolean('is_accepting_questions')->default(false);
             $table->boolean('allow_anon_questions')->default(false);
+            $table->boolean('is_featured')->default(false);
             $table->foreignUlid('user_id')->constrained('users')->cascadeOnDelete();
             $table->bigInteger('total_page_visit')->default(0);
             $table->string('category')->nullable();
