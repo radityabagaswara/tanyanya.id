@@ -16,6 +16,9 @@ export default {
             fontFamily: {
                 sans: ["inter", ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                base: "#FB4983",
+            },
         },
     },
 

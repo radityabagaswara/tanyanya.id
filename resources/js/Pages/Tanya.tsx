@@ -29,6 +29,7 @@ import React, { useState } from "react";
 function Tanya({ page }: any) {
     const { user }: any = usePage().props.auth;
     const [amount, setAmount] = useState(5000);
+    const [modalPayment, setModalPayment] = useState<boolean>(false);
     const { snapEmbed } = useSnap();
     const [snapToken, setSnapToken] = useState("");
     const form = useForm({
@@ -55,91 +56,61 @@ function Tanya({ page }: any) {
         postQuestion(false);
     };
 
+    const postSupportQuestion = () => {
+        axios
+            .post(route("question.new.support", page.id), {
+                ...form.data,
+                amount,
+            })
+            .then((res) => {
+                if (!res.data.data?.snap_token) return;
+                setModalPayment(false);
+                setSnapToken(res.data.data.snap_token);
+                setTimeout(() => {
+                    snapEmbed(res.data.data.snap_token, "snap-embed", {
+                        onSuccess: (result: any) => {
+                            form.reset("question");
+                            setSnapToken("");
+                            setAmount(5000);
+                            notifications.show({
+                                title: "Success",
+                                message: "Question sent successfully.",
+                                color: "green.5",
+                            });
+                        },
+                        onPending: (result: any) => {
+                            notifications.show({
+                                title: "Pending",
+                                message: "Your payment is pending.",
+                                color: "blue.5",
+                            });
+                        },
+                        onClose: () => {
+                            notifications.show({
+                                title: "Canceled",
+                                message: "Your payment is canceled.",
+                                color: "red.5",
+                            });
+                        },
+                    });
+                }, 500);
+            })
+            .catch((err) => {
+                notifications.show({
+                    title: "Error",
+                    message: "Something went wrong, please try again later.",
+                    color: "red.5",
+                });
+            });
+    };
+
     const postQuestion = (donation: boolean = false) => {
         if (!donation) {
             form.post(route("question.new", page.id), {
                 onSuccess: () => form.reset("question"),
             });
         } else {
-            modals.openConfirmModal({
-                title: "Support Creator",
-                id: "support-creator",
-                children: (
-                    <Stack>
-                        <Text>
-                            How much would you like to donate to support{" "}
-                            {page.user.name}?
-                        </Text>
-                        <NumberInput
-                            placeholder="5000"
-                            min={5000}
-                            max={10000000}
-                            description="Minimum support Rp 5.000"
-                            hideControls
-                            leftSection="Rp"
-                            value={amount}
-                            onChange={(value) => setAmount(Number(value))}
-                        />
-                    </Stack>
-                ),
-                labels: {
-                    confirm: "Send Question With Support",
-                    cancel: "Cancel",
-                },
-                onConfirm: () => {
-                    axios
-                        .post(route("question.new.support", page.id), {
-                            ...form.data,
-                            amount,
-                        })
-                        .then((res) => {
-                            if (!res.data.data?.snap_token) return;
-                            setSnapToken(res.data.data.snap_token);
-                            setTimeout(() => {
-                                snapEmbed(
-                                    res.data.data.snap_token,
-                                    "snap-embed",
-                                    {
-                                        onSuccess: (result: any) => {
-                                            form.reset("question");
-                                            setAmount(5000);
-                                            notifications.show({
-                                                title: "Success",
-                                                message:
-                                                    "Question sent successfully.",
-                                                color: "green.5",
-                                            });
-                                        },
-                                        onPending: (result: any) => {
-                                            notifications.show({
-                                                title: "Pending",
-                                                message:
-                                                    "Your payment is pending.",
-                                                color: "blue.5",
-                                            });
-                                        },
-                                        onClose: () => {
-                                            notifications.show({
-                                                title: "Canceled",
-                                                message:
-                                                    "Your payment is canceled.",
-                                                color: "red.5",
-                                            });
-                                        },
-                                    },
-                                );
-                            }, 500);
-                        })
-                        .catch((err) => {
-                            notifications.show({
-                                title: "Error",
-                                message:
-                                    "Something went wrong, please try again later.",
-                                color: "red.5",
-                            });
-                        });
-                },
-            });
+            setModalPayment(true);
         }
     };
 
@@ -307,6 +278,29 @@ function Tanya({ page }: any) {
                     </div>
                 </Modal>
             </Container>
+            <Modal onClose={() => setModalPayment(false)} opened={modalPayment}>
+                <Stack>
+                    <Text>
+                        How much would you like to donate to support{" "}
+                        {page.user.name}?
+                    </Text>
+                    <NumberInput
+                        placeholder="5000"
+                        min={5000}
+                        max={10000000}
+                        description="Minimum support Rp 5.000"
+                        hideControls
+                        leftSection="Rp"
+                        value={amount}
+                        onChange={(value) => {
+                            setAmount(Number(value));
+                        }}
+                    />
+                    <Button mt={"md"} onClick={postSupportQuestion}>
+                        Send Question With Support
+                    </Button>
+                </Stack>
+            </Modal>
         </AppLayout>
     );
 }

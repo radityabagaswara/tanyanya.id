@@ -21,14 +21,15 @@ interface IProps {}
 function Dashboard({}: IProps) {
     const [nextPage, setNextPage] = React.useState<boolean>(true);
     const [questions, setQuestions] = React.useState<any[]>([]);
+    const [filter, setFilter] = React.useState<string>("all");
     const [currentPage, setCurrentPage] = React.useState<number>(1);
     const [sort, setSort] = React.useState<string>("desc");
 
     const getQuestions = () => {
-        //url builder
         const searchParams = new URLSearchParams();
         searchParams.append("page", currentPage.toString());
         searchParams.append("sort", sort);
+        searchParams.append("filter", filter);
 
         axios
             .get(route("dashboard.getQuestions") + "?" + searchParams)
@@ -41,7 +42,7 @@ function Dashboard({}: IProps) {
 
     useEffect(() => {
         getQuestions();
-    }, [sort, currentPage]);
+    }, [sort, currentPage, filter]);
 
     const streamQuestion = (question: string | number) => {
         axios.put(route("streamQuestion", question)).then((res) => {
@@ -72,7 +73,7 @@ function Dashboard({}: IProps) {
             onConfirm: () => {
                 axios.delete(route("deleteQuestion", question)).then((res) => {
                     setQuestions((prev) =>
-                        prev.filter((q) => q.id !== question)
+                        prev.filter((q) => q.id !== question),
                     );
                     notifications.show({
                         title: "Question deleted",
@@ -88,22 +89,39 @@ function Dashboard({}: IProps) {
         <DashboardLayout>
             <Group justify="space-between" mb={"md"}>
                 <Title order={4}>Questions</Title>
-                <Select
-                    leftSection={<Text size="sm">Sort by: </Text>}
-                    leftSectionWidth={60}
-                    defaultValue={"desc"}
-                    onChange={(e) => {
-                        if (!e) return;
-                        setQuestions([]);
-                        setCurrentPage(1);
-                        setSort(e);
-                    }}
-                    placeholder="Sort by..."
-                    data={[
-                        { label: "Newest", value: "desc" },
-                        { label: "Oldest", value: "asc" },
-                    ]}
-                />
+                <Group gap={"md"}>
+                    <Select
+                        leftSection={<Text size="sm">Sort by: </Text>}
+                        leftSectionWidth={60}
+                        value={sort}
+                        onChange={(e) => {
+                            if (!e) return;
+                            setQuestions([]);
+                            setCurrentPage(1);
+                            setSort(e);
+                        }}
+                        placeholder="Sort by..."
+                        data={[
+                            { label: "Newest", value: "desc" },
+                            { label: "Oldest", value: "asc" },
+                        ]}
+                    />
+                    <Select
+                        leftSection={<Text size="sm">Filter by:</Text>}
+                        leftSectionWidth={70}
+                        value={filter}
+                        onChange={(e) => {
+                            if (!e) return;
+                            setQuestions([]);
+                            setCurrentPage(1);
+                            setFilter(e);
+                        }}
+                        data={[
+                            { label: "All", value: "all" },
+                            { label: "Support", value: "support" },
+                        ]}
+                    />
+                </Group>
             </Group>
             <InfiniteScroll
                 dataLength={questions.length}
@@ -126,6 +144,7 @@ function Dashboard({}: IProps) {
                             <QuestionCard
                                 key={index}
                                 id={question.id}
+                                donation={question.payment}
                                 user={question.sender}
                                 question={question.question}
                                 date={question.created_at}

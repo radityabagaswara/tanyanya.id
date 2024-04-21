@@ -1,5 +1,14 @@
 import { Broadcast } from "@/echos";
-import { Box, Card, CardSection, Text, Title } from "@mantine/core";
+import {
+    Badge,
+    Box,
+    Card,
+    CardSection,
+    Group,
+    Text,
+    Title,
+} from "@mantine/core";
+import { IconGift } from "@tabler/icons-react";
 import React, { useEffect, useState } from "react";
 
 interface IProps {
@@ -78,6 +87,14 @@ function Overlay({
                           ? data.question
                           : "Waiting for question..."}
                 </div>
+
+                <Group mt={"md"} justify="center">
+                    {data.payment && (
+                        <Badge size="xl" leftSection={<IconGift size={18} />}>
+                            Rp {data.payment.amount.toLocaleString("id-ID")}
+                        </Badge>
+                    )}
+                </Group>
             </Card.Section>
             <CardSection bg={colors.body_color}>
                 <Text ta={"center"} size="sm" c="dimmed">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Midtrans\Notification;
 
 class PaymentCallbackController extends Controller
@@ -20,16 +21,33 @@ class PaymentCallbackController extends Controller
         $notification = new Notification();
         $transaction = $notification->transaction_status;
         $order_id = $notification->order_id;
-        $payment = Payment::where('order_id', $order_id)->firstOrFail();
+        DB::beginTransaction();
+        try {
+            $payment = Payment::where('order_id', $order_id)->firstOrFail();
 
-        $payment->update([
-            'status' => $transaction,
-            'transaction_time' => now(),
-        ]);
+            if ($transaction === 'capture' || $transaction === 'settlement') {
+                $payment->update([
+                    'status' => $transaction,
+                    'transaction_time' => now(),
+                ]);
+            } else {
+                $payment->update([
+                    'status' => $transaction,
+                ]);
+            }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Payment status updated',
-        ]);
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Payment status updated',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

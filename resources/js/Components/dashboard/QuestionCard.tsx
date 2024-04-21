@@ -1,6 +1,7 @@
 import {
     ActionIcon,
     Avatar,
+    Badge,
     Card,
     Divider,
     Group,
@@ -14,6 +15,7 @@ import { format } from "date-fns";
 import {
     IconBroadcast,
     IconDots,
+    IconGift,
     IconReport,
     IconTrash,
 } from "@tabler/icons-react";
@@ -25,6 +27,7 @@ interface IProps {
     question: any;
     id: number;
     date: string;
+    donation?: any | null;
     onStream?: (id: string | number) => void;
     onDelete?: (id: string | number) => void;
 }
@@ -36,9 +39,10 @@ function QuestionCard({
     date,
     onStream,
     onDelete,
+    donation = null,
 }: IProps) {
     return (
-        <Card>
+        <Card className={donation && "border-base border-[3px]"}>
             <Card.Section pb={0}>
                 <Group justify="space-between" align="start">
                     <Group>
@@ -56,6 +60,7 @@ function QuestionCard({
                             </Text>
                         </Stack>
                     </Group>
+
                     <Menu>
                         <Menu.Target>
                             <ActionIcon variant="subtle">
@@ -89,9 +94,19 @@ function QuestionCard({
 
             <Card.Section pt={"sm"} pb={"sm"}>
                 <Text>{question}</Text>
+                {donation ? (
+                    <Badge
+                        size="lg"
+                        mt={"md"}
+                        leftSection={<IconGift size={18} />}
+                    >
+                        Rp {donation.amount.toLocaleString("id-ID")}
+                    </Badge>
+                ) : null}
             </Card.Section>
 
             <Divider />
+
             <Card.Section>
                 <Group justify="end">
                     <Tooltip label="Send question to overlay">

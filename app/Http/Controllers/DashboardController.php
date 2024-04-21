@@ -29,7 +29,7 @@ class DashboardController extends Controller
 
         $question->load(['sender' => function ($query) {
             $query->select('id', 'name');
-        }]);
+        }, 'payment']);
 
         if ($question->is_anonymous && $question->sender) {
             $question->sender->name = 'Anonymous';
@@ -50,7 +50,18 @@ class DashboardController extends Controller
         $questions = Question::where('page_id', $page)
             ->with(['sender' => function ($query) {
                 $query->select('id', 'name');
-            }]);
+            }, 'payment']);
+
+        $questions->where(function ($query) use ($request) {
+            if (!$request->has('filter') || $request->filter !== 'support') {
+                $query =  $query->whereDoesntHave('payment');
+            };
+
+            $query->orWhereHas('payment', function ($query) {
+                $query->where('status', 'settlement')->orWhere('status', 'capture');
+            });
+        });
+
         if ($request->has('sort')) {
             $questions = $questions->orderBy('created_at', $request->sort);
         }
@@ -76,6 +87,7 @@ class DashboardController extends Controller
             return response()->json(['message' => 'Question not found'], 404);
         }
         DB::beginTransaction();
+
         try {
             $question->delete();
             DB::commit();
@@ -85,5 +97,4 @@ class DashboardController extends Controller
             return response()->json(['title' => 'Error', 'message' => 'Failed to delete question.'], 500);
         }
     }
-
 }
