@@ -1,4 +1,5 @@
 import FlashMessage from "@/Components/FlashMessage";
+import HomeFooter from "@/Components/navigation/HomeFooter";
 import { HomeNavBar } from "@/Components/navigation/HomeNavbar";
 import { LoadingOverlay } from "@mantine/core";
 import React from "react";
@@ -30,6 +31,7 @@ const AppLayout = ({
                     {children}
                 </main>
             </div>
+            <HomeFooter />
         </>
     );
 };
