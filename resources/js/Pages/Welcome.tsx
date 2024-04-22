@@ -91,6 +91,16 @@ function Welcome({ creators }: IProps) {
                                     );
                                 })}
                             </SimpleGrid>
+                            <Group justify="center">
+                                <Button
+                                    mt={"lg"}
+                                    variant="light"
+                                    component={Link}
+                                    href={route("explore")}
+                                >
+                                    Explore More Creator
+                                </Button>
+                            </Group>
                         </Box>
                         <Box mt={"5rem"}>
                             <Title

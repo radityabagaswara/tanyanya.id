@@ -23,7 +23,7 @@ interface INavLink {
 const navigation: INavLink[] = [
     {
         label: "Explore",
-        href: "#",
+        href: route("explore"),
     },
 ];
 
@@ -36,13 +36,15 @@ export function HomeNavBar() {
         <Box className=" border-b border-gray-300 dark:border-gray-600 fixed top-0 w-full z-40 bg-white">
             <header className={"container mx-auto h-16 px-4"}>
                 <Group justify="space-between" h="100%">
-                    <Image
-                        src={
-                            "https://velcro.is3.cloudhost.id/tanyanyaid_logotext_md-08.png"
-                        }
-                        w={150}
-                    />
-                    <Group h="100%" gap={0} visibleFrom="sm">
+                    <Link href="/">
+                        <Image
+                            src={
+                                "https://velcro.is3.cloudhost.id/tanyanyaid_logotext_md-08.png"
+                            }
+                            w={150}
+                        />
+                    </Link>
+                    <Group h="100%" gap="sm" visibleFrom="sm">
                         {navigation.map((value, index) => {
                             return (
                                 <Anchor
@@ -57,8 +59,8 @@ export function HomeNavBar() {
                         <Group visibleFrom="sm">
                             {page.auth.user ? (
                                 <Button
+                                    m={0}
                                     variant="transparent"
-                                    p={"lg"}
                                     leftSection={
                                         <Avatar
                                             color="tanya-pink"

@@ -130,15 +130,15 @@ const DashboardLayout = ({ children, title, loading }: Props) => {
                             </Menu.Item>
                             <Menu.Divider my="sm" />
                             <Menu.Item>
-                                <Button
-                                    p={0}
-                                    color="red.5"
-                                    component={Link}
-                                    href="route('logout')"
-                                    variant="transparent"
-                                >
-                                    Logout
-                                </Button>
+                                <Link href={route("logout")} method="post">
+                                    <Button
+                                        p={0}
+                                        color="red.5"
+                                        variant="transparent"
+                                    >
+                                        Logout
+                                    </Button>
+                                </Link>
                             </Menu.Item>
                         </Menu.Dropdown>
                     </Menu>

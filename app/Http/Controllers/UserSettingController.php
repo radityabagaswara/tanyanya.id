@@ -13,7 +13,7 @@ class UserSettingController extends Controller
 {
     public function index()
     {
-        $user = User::findOrFail(auth()->user()->id)->first();
+        $user = auth()->user();
         return Inertia::render('Dashboard/Settings/Index', [
             'user' => $user
         ]);

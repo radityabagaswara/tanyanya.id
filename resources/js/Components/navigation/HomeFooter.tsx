@@ -17,7 +17,7 @@ import { Link } from "@inertiajs/react";
 function HomeFooter() {
     return (
         <Box bg={"tanya-pink"} component="footer">
-            <Container py={"xl"}>
+            <Container py={"3rem"}>
                 <Title order={2} c="white" ta={"center"}>
                     Start Making Q&A Content Beautiful!
                 </Title>
@@ -25,7 +25,12 @@ function HomeFooter() {
                     Create your page now.
                 </Text>
                 <Group justify="center" mt={"lg"}>
-                    <Button variant="white" size="md">
+                    <Button
+                        variant="white"
+                        size="md"
+                        component={Link}
+                        href={route("register")}
+                    >
                         Get Started
                     </Button>
                 </Group>
