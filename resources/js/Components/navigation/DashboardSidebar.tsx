@@ -9,6 +9,8 @@ import {
     IconHomeQuestion,
     IconBroadcast,
     IconSettings,
+    IconReportMoney,
+    IconDropletDollar,
 } from "@tabler/icons-react";
 import { Link } from "@inertiajs/react";
 import { LinksGroupProps, NavbarLinksGroup } from "./NavbarLinkGroup";
@@ -23,6 +25,16 @@ const links: LinksGroupProps[] = [
         label: "Page Settings",
         icon: IconHomeQuestion,
         href: route("page.index"),
+    },
+    {
+        label: "Support Recieved",
+        icon: IconDropletDollar,
+        href: route("support"),
+    },
+    {
+        label: "Payment History",
+        icon: IconReportMoney,
+        href: route("history"),
     },
     {
         label: "Overlay",

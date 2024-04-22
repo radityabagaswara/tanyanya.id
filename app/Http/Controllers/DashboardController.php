@@ -86,6 +86,11 @@ class DashboardController extends Controller
         if ($question->page_id != auth()->user()->page->id) {
             return response()->json(['message' => 'Question not found'], 404);
         }
+
+        if ($question->payment != null) {
+            return response()->json(['message' => 'Support question can\'t be deleted'], 402);
+        }
+
         DB::beginTransaction();
 
         try {

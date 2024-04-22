@@ -71,16 +71,27 @@ function Dashboard({}: IProps) {
             },
             confirmProps: { color: "red" },
             onConfirm: () => {
-                axios.delete(route("deleteQuestion", question)).then((res) => {
-                    setQuestions((prev) =>
-                        prev.filter((q) => q.id !== question),
-                    );
-                    notifications.show({
-                        title: "Question deleted",
-                        message: "Question has been deleted successfully",
-                        color: "green",
+                axios
+                    .delete(route("deleteQuestion", question))
+                    .then((res) => {
+                        setQuestions((prev) =>
+                            prev.filter((q) => q.id !== question),
+                        );
+                        notifications.show({
+                            title: "Question deleted",
+                            message: "Question has been deleted successfully",
+                            color: "green",
+                        });
+                    })
+                    .catch((err) => {
+                        if (err.response.data.message) {
+                            notifications.show({
+                                title: "Error",
+                                message: err.response.data.message,
+                                color: "red.5",
+                            });
+                        }
                     });
-                });
             },
         });
     };

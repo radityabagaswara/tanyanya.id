@@ -120,7 +120,7 @@ class TanyaController extends Controller
             'question.max' => 'Question may not be greater than 180 characters.',
             'amount.required' => 'Please enter an amount.',
             'amount.min' => 'Amount must be at least 5000.',
-            'amount.max' => 'Amount must not exceed 10,000,000.',
+            'amount.max' => 'Amount must not exceed 8,000,000.',
         ]);
 
         if ($page->is_accepting_questions === false) {

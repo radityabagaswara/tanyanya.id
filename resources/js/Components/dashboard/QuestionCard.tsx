@@ -28,6 +28,7 @@ interface IProps {
     id: number;
     date: string;
     donation?: any | null;
+    showMenu?: boolean;
     onStream?: (id: string | number) => void;
     onDelete?: (id: string | number) => void;
 }
@@ -40,6 +41,7 @@ function QuestionCard({
     onStream,
     onDelete,
     donation = null,
+    showMenu = true,
 }: IProps) {
     return (
         <Card className={donation && "border-base border-[3px]"}>
@@ -60,35 +62,36 @@ function QuestionCard({
                             </Text>
                         </Stack>
                     </Group>
-
-                    <Menu>
-                        <Menu.Target>
-                            <ActionIcon variant="subtle">
-                                <IconDots />
-                            </ActionIcon>
-                        </Menu.Target>
-                        <Menu.Dropdown>
-                            <Menu.Item
-                                leftSection={<IconReport />}
-                                component={Link}
-                                href="#"
-                                color="tanya-pink.3"
-                            >
-                                Report Question
-                            </Menu.Item>
-                            <Divider my={"sm"} />
-                            <Menu.Item
-                                leftSection={<IconTrash />}
-                                component={"button"}
-                                color="red"
-                                onClick={() => {
-                                    onDelete && onDelete(id);
-                                }}
-                            >
-                                Delete Question
-                            </Menu.Item>
-                        </Menu.Dropdown>
-                    </Menu>
+                    {showMenu && (
+                        <Menu>
+                            <Menu.Target>
+                                <ActionIcon variant="subtle">
+                                    <IconDots />
+                                </ActionIcon>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Menu.Item
+                                    leftSection={<IconReport />}
+                                    component={Link}
+                                    href="#"
+                                    color="tanya-pink.3"
+                                >
+                                    Report Question
+                                </Menu.Item>
+                                <Divider my={"sm"} />
+                                <Menu.Item
+                                    leftSection={<IconTrash />}
+                                    component={"button"}
+                                    color="red"
+                                    onClick={() => {
+                                        onDelete && onDelete(id);
+                                    }}
+                                >
+                                    Delete Question
+                                </Menu.Item>
+                            </Menu.Dropdown>
+                        </Menu>
+                    )}
                 </Group>
             </Card.Section>
 

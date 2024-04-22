@@ -8,6 +8,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TanyaController;
 use App\Http\Controllers\UserSettingController;
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\SupportHistoryController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,6 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::post("/profile/picture", [PageController::class, 'updateProfilePicture'])->name('profile.picture');
     Route::post("/page/banner", [PageController::class, 'updatePageBanner'])->name('page.banner');
     Route::put('/page/settings', [PageController::class, 'updateSettings'])->name('page.settings');
+
+    Route::get('/dashboard/history', [HistoryController::class, 'index'])->name('history');
+    Route::get('/history', [HistoryController::class, 'getHistory'])->name('history.get');
+
+    Route::get('/dashboard/support', [SupportHistoryController::class, 'index'])->name('support');
+    Route::get('/support', [SupportHistoryController::class, 'getSupport'])->name('support.get');
 
     Route::post('/dashboard/settings/email', [UserSettingController::class, 'changeEmail'])->name('dashboard.setting.email');
     Route::post('/dashboard/settings/notification', [UserSettingController::class, 'notificationSetting'])->name('dashboard.setting.notification');

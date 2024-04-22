@@ -89,7 +89,7 @@ function Overlay({
                 </div>
 
                 <Group mt={"md"} justify="center">
-                    {data.payment && (
+                    {data?.payment && (
                         <Badge size="xl" leftSection={<IconGift size={18} />}>
                             Rp {data.payment.amount.toLocaleString("id-ID")}
                         </Badge>
